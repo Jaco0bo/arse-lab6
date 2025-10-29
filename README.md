@@ -171,4 +171,4 @@ Calcule la dirección del servicio y utilice wss (Protocolo seguro) en cambio de
 
 ![](./images/imagen29.png)
 
-**Video:** 
+**Video:** https://youtu.be/PABANzTkQyI
