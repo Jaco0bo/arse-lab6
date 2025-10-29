@@ -88,6 +88,13 @@ archivos Js y JSX, esto facilita la depuración y el mantenimiento.
 
 ![](./images/imagen13.png)
 
+### Antes de ejecutar vamos a crear los componentes del servidor
 
+**14. Primero el Endpoint:**
 
+![](./images/imagen14.png)
+
+**14. Luego el configurador:**
+
+![](./images/imagen15.png)
 
