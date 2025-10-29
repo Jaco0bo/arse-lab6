@@ -40,7 +40,7 @@ Para los pasos 1,2 y 3 hacemos uso de spring initializr que nos genera de manera
 
 ![](./images/imagen3.png)
 
-**5. Cree un index html en la siguiente localización: /src/main/resources/static, corra la clase que acabamos de crear y su servidor debe iniciar la ejecución:**
+**5. Cree un index html en la siguiente localización: ``/src/main/resources/static``, corra la clase que acabamos de crear y su servidor debe iniciar la ejecución:**
 
 ![](./images/imagen4.png)
 
@@ -53,3 +53,41 @@ Para los pasos 1,2 y 3 hacemos uso de spring initializr que nos genera de manera
 **7. Verifique que el servidor esté entregando elementos estáticos web entrando a: ``localhost:8080/index.html``**
 
 ![](./images/imagen7.png)
+
+### Ahora construimos el cliente Web
+
+El index.html sería. Solo contiene un elemento “div” con identificador root. A Partir
+de este elemento construiremos la aplicación. Observe que esta página se encarga
+de cargar las librerías necesarias y el único script dónde estarán nuestros
+componentes. Observe que solo usaremos un elemento JSX, es decir no usaremos
+archivos Js y JSX, esto facilita la depuración y el mantenimiento.
+
+**8. Editamos el index.html para que quede así:**
+
+![](./images/imagen8.png)
+
+### Construyamos el componente ReactJS paso a paso.
+
+**9. Primero construimos una versión simple, en el archivo js/bbComponents.jsx ponemos:**
+
+![](./images/imagen9.png)
+
+**10. Ahora extendamos una poco y iremos los elementos principales de la interfaz gráfica:**
+
+![](./images/imagen10.png)
+
+**11. Ahora creemos un componente para representar el canvas del tablero:**
+
+![](./images/imagen11.png)
+
+**12. Ahora vamos a modificarlo para poder interactuar con el servidor usando web sockets:**
+
+![](./images/imagen12.png)
+
+**13. Modifiquemos el componente BBCanvas para utilizar este web socket:**
+
+![](./images/imagen13.png)
+
+
+
+
