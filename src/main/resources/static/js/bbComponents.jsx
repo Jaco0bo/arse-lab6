@@ -1,66 +1,89 @@
-function Editor({name}) {
+function Editor({ name }) {
     return (
         <div>
             <h1>Hello, {name}</h1>
-            <hr/>
+            <hr />
             <div id="toolstatus"></div>
-            <hr/>
+            <hr />
             <div id="container"></div>
-            <hr/>
+            <hr />
             <div id="info"></div>
         </div>
     );
 }
 
 function BBCanvas() {
-    const [svrStatus, setSvrStatus] = React.useState({loadingState: 'Loading Canvas...'});
-        const comunicationWS = React.useRef(null);
-        const myp5 = React.useRef(null);
-        const sketch = function (p) {
-            let x = 100;
-            let y = 100;
-            p.setup = function () {
-                p.createCanvas(700, 410);
-            }
-            p.draw = function () {
-                if (p.mouseIsPressed === true) {
-                    p.fill(0, 0, 0);
-                    p.ellipse(p.mouseX, p.mouseY, 20, 20);
-                    comunicationWS.current.send(p.mouseX,p.mouseY);
-                }
-                if (p.mouseIsPressed === false) {
-                    p.fill(255, 255, 255);
-                }
+    const [svrStatus, setSvrStatus] = React.useState({ loadingState: 'Loading Canvas...' });
+    const comunicationWS = React.useRef(null);
+    const myp5 = React.useRef(null);
+
+    const sketch = function (p) {
+        p.setup = function () {
+            p.createCanvas(700, 410);
+            p.background(255);
+        };
+
+        p.draw = function () {
+            if (p.mouseIsPressed === true) {
+                p.fill(0);
+                p.noStroke();
+                p.ellipse(p.mouseX, p.mouseY, 20, 20);
+                comunicationWS.current?.send(p.mouseX, p.mouseY);
             }
         };
-        React.useEffect(() => {
-            myp5.current = new p5(sketch, 'container');
-            setSvrStatus({loadingState: 'Canvas Loaded'});
-            comunicationWS.current = new WSBBChannel(BBServiceURL(),
-                (msg) => {
-                    var obj = JSON.parse(msg);
-                    console.log("On func call back ", msg);
+    };
+
+    React.useEffect(() => {
+        // Monta el canvas dentro de #container (creado por <Editor />)
+        myp5.current = new p5(sketch, 'container');
+        setSvrStatus({ loadingState: 'Canvas Loaded' });
+
+        // WebSocket
+        comunicationWS.current = new WSBBChannel(
+            BBServiceURL(),
+            (msg) => {
+                try {
+                    const obj = JSON.parse(msg);
                     drawPoint(obj.x, obj.y);
-                });
-            return () => {
-                console.log('Clossing connection ...')
-                comunicationWS.current.close();
-            };
-        }, []);
-        function drawPoint(x, y) {
+                } catch (e) {
+                    console.error('Mensaje WS no es JSON válido:', msg, e);
+                }
+            }
+        );
+
+        // Cleanup
+        return () => {
+            console.log('Cerrando conexión ...');
+            try { comunicationWS.current?.close(); } catch (e) { /* noop */ }
+        };
+    }, []);
+
+    function drawPoint(x, y) {
+        if (!myp5.current) return;
+        myp5.current.fill(0);
+        myp5.current.noStroke();
         myp5.current.ellipse(x, y, 20, 20);
     }
-    return(
+
+    return (
         <div>
             <h4>Drawing status: {svrStatus.loadingState}</h4>
-        </div>);
+        </div>
+    );
 }
-
 
 // Retorna la url del servicio. Es una función de configuración.
 function BBServiceURL() {
-    return 'ws://localhost:8080/bbService';
+    var host = window.location.host;
+    console.log("Host: " + host);
+    var url = 'wss://' + (host) + '/bbService';
+    if(host.toString().startsWith("localhost")){
+        url = 'ws://' + (host) + '/bbService';
+    }
+    console.log("URL Calculada: " + url);
+    return url;
 }
+
 
 class WSBBChannel {
     constructor(URL, callback) {
@@ -72,30 +95,37 @@ class WSBBChannel {
         this.receivef = callback;
     }
     onOpen(evt) {
-        console.log("In onOpen", evt);
+        console.log('In onOpen', evt);
     }
     onMessage(evt) {
-        console.log("In onMessage", evt);
-        // Este if permite que el primer mensaje del servidor no se tenga en cuenta.
-        // El primer mensaje solo confirma que se estableció la conexión.
-        // De ahí en adelante intercambiaremos solo puntos(x,y) con el servidor
-        if (evt.data != "Connection established.") {
+        console.log('In onMessage', evt);
+        if (evt.data !== 'Connection established.') {
             this.receivef(evt.data);
         }
     }
     onError(evt) {
-        console.error("In onError", evt);
+        console.error('In onError', evt);
     }
     send(x, y) {
-        let msg = '{ "x": ' + (x) + ', "y": ' + (y) + "}";
-        console.log("sending: ", msg);
-        this.wsocket.send(msg);
+        const msg = JSON.stringify({ x: Number(x), y: Number(y) });
+        if (this.wsocket?.readyState === WebSocket.OPEN) {
+            this.wsocket.send(msg);
+        } else {
+            console.warn('WS no está abierto; no se envió el mensaje');
+        }
+    }
+    close() {
+        try { this.wsocket?.close(); } catch (e) { /* noop */ }
     }
 }
 
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
+// Montaje raíz: renderiza Editor (crea #container) y luego BBCanvas
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <h1>Bienvenido</h1>
+    <>
+        <Editor name="Andrés" />
+        <BBCanvas />
+    </>
 );
+
 

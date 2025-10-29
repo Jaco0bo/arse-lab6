@@ -94,7 +94,42 @@ archivos Js y JSX, esto facilita la depuración y el mantenimiento.
 
 ![](./images/imagen14.png)
 
-**14. Luego el configurador:**
+**15. Luego el configurador:**
 
 ![](./images/imagen15.png)
+
+### ¿Podemos subirlo a AWS?
+
+#### Para subirlo a AWS siga los siguientes pasos
+
+**16. Modifique el POM para copiar las dependencias:**
+
+![](./images/imagen16.png)
+
+**El git ignore se creó junto al repositorio al inicio del proyecto**
+
+**17. Corra su aplicación desde la línea de comandos**
+
+**Para ello primero ejecutamos ``mvn clean package``**
+
+![](./images/imagen17.png)
+
+**Luego ejecutamos ``java -jar target/lab6-0.0.1-SNAPSHOT.jar``**
+
+![](./images/imagen18.png)
+
+**Evidencia de que la aplicación corre localmente:**
+
+![](./images/imagen19.png)
+
+### Prepare su aplicación para correr en un servidor desconocido
+
+Calcule la dirección del servicio y utilice wss (Protocolo seguro) en cambio de ws
+(Protocolo no seguro). Utilice esto solo si el protocolo del servidor será seguro.
+
+![](./images/imagen20.png)
+
+**18. Inicie Spring en el puerto indicado por el entorno:**
+
+![](./images/imagen21.png)
 
