@@ -133,3 +133,8 @@ Calcule la dirección del servicio y utilice wss (Protocolo seguro) en cambio de
 
 ![](./images/imagen21.png)
 
+**Evidencias de que se puede ingresar variables de entorno:**
+
+![](./images/imagen22.png)
+
+![](./images/imagen23.png)
