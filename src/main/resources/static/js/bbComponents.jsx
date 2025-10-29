@@ -74,13 +74,10 @@ function BBCanvas() {
 
 // Retorna la url del servicio. Es una función de configuración.
 function BBServiceURL() {
-    var host = window.location.host;
-    console.log("Host: " + host);
-    var url = 'wss://' + (host) + '/bbService';
-    if(host.toString().startsWith("localhost")){
-        url = 'ws://' + (host) + '/bbService';
-    }
-    console.log("URL Calculada: " + url);
+    const { protocol, host } = window.location; // p.ej. protocol='http:', host='54.12.34.56'
+    const wsProto = protocol === 'https:' ? 'wss://' : 'ws://';
+    const url = wsProto + host + '/bbService';
+    console.log('WS URL:', url);
     return url;
 }
 
