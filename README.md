@@ -141,25 +141,29 @@ Calcule la dirección del servicio y utilice wss (Protocolo seguro) en cambio de
 
 **19. Cree un servidor en aws, envíe los archivos necesarios y ejecute su proyecto. No olvide abrir los puertos.**
 
-Para ello primero creamos una instancia EC2 en AWS junto con el siguiente grupo de seguridad:
+**Para ello primero creamos una instancia EC2 en AWS junto con el siguiente grupo de seguridad:**
+
+**Instancia EC2:**
 
 ![](./images/imagen24.png)
 
+**Grupo de Seguridad:**
+
 ![](./images/imagen24b.png)
 
-Luego desde nuestra máquina nos conectamos a la instancia EC2 usando ssh:
+**Luego desde nuestra máquina nos conectamos a la instancia EC2 usando ssh:**
 
 ![](./images/imagen25.png)
 
-Luego copiamos el archivo jar a la instancia EC2 usando scp:
+**Luego copiamos el archivo jar a la instancia EC2 usando scp:**
 
 ![](./images/imagen26.png)
 
-Luego desde la instancia EC2 instalamos Java:
+**Luego desde la instancia EC2 instalamos Java:**
 
 ![](./images/imagen27.png)
 
-Finalmente, ejecutamos el archivo jar para poder iniciar la aplicación:
+**Finalmente, ejecutamos el archivo jar para poder iniciar la aplicación:**
 
 ![](./images/imagen28.png)
 
